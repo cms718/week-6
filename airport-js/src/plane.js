@@ -7,6 +7,11 @@ class Plane {
   land() {
     this.state = "landed"
   }
+
+  takeoff() {
+    this.state = "flying";
+  }
+
   getState() {
     return this.state
   }
