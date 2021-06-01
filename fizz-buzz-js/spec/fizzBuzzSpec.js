@@ -24,4 +24,10 @@ describe("Fizz Buzz", function () {
       expect(fizzBuzz.play(15)).toEqual("FizzBuzz");
     });
   });
+
+  describe("not a multiple of 3 or 5", function () {
+    it("returns 1 for 1", function () {
+      expect(fizzBuzz.play(1)).toEqual(1);
+    });
+  });
 });
