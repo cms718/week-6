@@ -1,46 +1,84 @@
+"use-strict";
+
 describe("Thermostat", () => {
+  let thermostat;
+
+  beforeEach(() => {
+    thermostat = new Thermostat();
+  });
+
   it("starts at 20 degrees", () => {
-    let thermostat = new Thermostat();
-    expect(thermostat.temperature).toEqual(20);
+    expect(thermostat.getTemperature()).toEqual(20);
+  });
+
+  it("has power saving mode on by default", () => {
+    expect(thermostat.isPowerSavingOn()).toBe(true);
+  });
+
+  it("can reset to the default temperature", () => {
+    thermostat.up();
+    thermostat.resetTemperature();
+    expect(thermostat.getTemperature()).toEqual(20);
   });
 
   describe("increasing the temperature", () => {
     it("adds 1 to temperature", () => {
-      let thermostat = new Thermostat();
       thermostat.up();
-      expect(thermostat.temperature).toEqual(21);
+      expect(thermostat.getTemperature()).toEqual(21);
     });
 
     it("has a maximum temperature of 32 when power saver is off", () => {
-      let thermostat = new Thermostat();
       thermostat.togglePowerSaving();
       for (i = 0; i <= 13; i++) {
         thermostat.up();
       }
-      expect(thermostat.temperature).toEqual(32);
+      expect(thermostat.getTemperature()).toEqual(32);
     });
+
     it("has a maximum temperature of 25 when power saver is on", () => {
-      let thermostat = new Thermostat();
       for (i = 0; i <= 6; i++) {
         thermostat.up();
       }
-      expect(thermostat.temperature).toEqual(25);
+      expect(thermostat.getTemperature()).toEqual(25);
     });
   });
 
   describe("descreasing the temperature", () => {
     it("takes 1 off temperature", () => {
-      let thermostat = new Thermostat();
       thermostat.down();
-      expect(thermostat.temperature).toEqual(19);
+      expect(thermostat.getTemperature()).toEqual(19);
     });
 
     it("has a minimum of 10", () => {
-      let thermostat = new Thermostat();
       for (i = 0; i <= 10; i++) {
         thermostat.down();
       }
-      expect(thermostat.temperature).toEqual(10);
+      expect(thermostat.getTemperature()).toEqual(10);
+    });
+  });
+
+  describe("displaying the current energy usage", () => {
+    describe("when the temperature is below 18", () => {
+      it("has low-usage", () => {
+        for (i = 0; i <= 3; i++) {
+          thermostat.down();
+        }
+        expect(thermostat.energyUsage()).toEqual("low-usage");
+      });
+    });
+    describe("when the temperature is <= 25", () => {
+      it("has medium-usage", () => {
+        expect(thermostat.energyUsage()).toEqual("medium-usage");
+      });
+    });
+    describe("when the temperature is higher than 25", () => {
+      it("has high-usage", () => {
+        thermostat.togglePowerSaving();
+        for (i = 0; i <= 8; i++) {
+          thermostat.up();
+        }
+        expect(thermostat.energyUsage()).toEqual("high-usage");
+      });
     });
   });
 });
