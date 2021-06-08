@@ -6,11 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTemperature = () => {
     document.getElementById("temperature").innerHTML =
       thermostat.getTemperature();
-    if (thermostat.energyUsage() === "medium-usage")
-      document.getElementById("temperature").style.color = "black";
-    else if (thermostat.energyUsage() === "low-usage")
-      document.getElementById("temperature").style.color = "green";
-    else document.getElementById("temperature").style.color = "red";
+    document.getElementById("temperature").className = thermostat.energyUsage();
   };
 
   updatePowerSaving = () => {
