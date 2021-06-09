@@ -35,6 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
     thermostat.resetTemperature();
     updateTemperature();
   });
+
+  document.getElementById("get-weather").addEventListener("click", () => {
+    updateCurrentWeather();
+  });
+
+  updateCurrentWeather = async () => {
+    let city = document.getElementById("city").value;
+    let weather = await getCurrentWeather(city);
+    document.getElementById("current-weather").innerHTML = weather;
+  };
+
   updateTemperature();
   updatePowerSaving();
 });
